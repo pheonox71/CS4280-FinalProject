@@ -103,7 +103,9 @@ scene.add(ball)
 
 // Maze
 let mtl_file = './models/Town.mtl';
-let obj_file = './models/MazeTown1.obj';
+// Same Townscaper OBJ. The .js suffix is only so GitHub Pages gzips it
+// (.obj is served as application/x-tgif and is not compressed).
+let obj_file = './models/MazeTown1.obj.js';
 
 let  mtlLoader = new MTLLoader();
 mtlLoader.load(
@@ -207,27 +209,18 @@ function executeMovement() {
 
 }
 
-// Check for collision between the ball and the maze
+// Check for collision between the ball and the maze.
+// A hit within CheckDistance ahead of the ball center blocks that move.
+// Requiring a reverse hit as well only stopped the ball inside thick meshes
+// such as trees: building walls are single-sided, so the reverse ray missed
+// and the ball passed through.
 function checkCollision(movement) {
     let mazeObject = scene.getObjectByName('maze');
     if (!mazeObject) return true; // Assume collision if maze object is not found
+    if (movement.lengthSq() === 0) return false;
 
     let CheckDistance = 0.15; // Set the maximum distance for collision detection
 
-    let forwardRaycaster = new THREE.Raycaster(ball.position, movement.clone().normalize());
-    forwardRaycaster.far = CheckDistance; // Set the maximum distance for the ray
-
-    let forwardIntersects = forwardRaycaster.intersectObject(mazeObject, true);
-
-    if (forwardIntersects.length > 0) {
-        // If collision in forward direction, check if moving backward is possible
-        let reverseMovement = movement.clone().multiplyScalar(-1);
-        let reverseRaycaster = new THREE.Raycaster(ball.position, reverseMovement.clone().normalize());
-        reverseRaycaster.far = CheckDistance; // Set the maximum distance for the reverse ray
-        let reverseIntersects = reverseRaycaster.intersectObject(mazeObject, true);
-        return reverseIntersects.length > 0;
-    }
-
-    // No collision detected in the forward direction
-    return false;
+    let forwardRaycaster = new THREE.Raycaster(ball.position, movement.clone().normalize(), 0, CheckDistance);
+    return forwardRaycaster.intersectObject(mazeObject, true).length > 0;
 }
