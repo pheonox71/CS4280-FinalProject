@@ -18,7 +18,7 @@ document.querySelector('#std_name').innerHTML = `<strong>${std_name}</strong>`
 let canvas = document.querySelector('#webgl-scene')
 let scene = new THREE.Scene()
 let renderer = new THREE.WebGLRenderer({canvas})
-let camera = new THREE.PerspectiveCamera(45, canvas.clientWidth / canvas.clientWidth, .1, 1000)
+let camera = new THREE.PerspectiveCamera(45, canvas.clientWidth / canvas.clientHeight, .1, 1000)
 
 renderer.setSize(canvas.clientWidth, canvas.clientHeight)
 renderer.setClearColor(0xEEEEEE)
@@ -223,7 +223,7 @@ function checkCollision(movement) {
         // If collision in forward direction, check if moving backward is possible
         let reverseMovement = movement.clone().multiplyScalar(-1);
         let reverseRaycaster = new THREE.Raycaster(ball.position, reverseMovement.clone().normalize());
-        reverseRaycaster.far = maxDistance; // Set the maximum distance for the reverse ray
+        reverseRaycaster.far = CheckDistance; // Set the maximum distance for the reverse ray
         let reverseIntersects = reverseRaycaster.intersectObject(mazeObject, true);
         return reverseIntersects.length > 0;
     }

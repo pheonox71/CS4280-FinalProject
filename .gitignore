@@ -1,0 +1,14 @@
+# Installed dependencies. The course repo committed these; this copy does not.
+node_modules/
+
+# JetBrains IDE files. workspace.xml recorded local machine paths.
+.idea/
+
+# OS / npm logs
+.DS_Store
+npm-debug.log*
+yarn-error.log*
+
+# dist/ stays tracked. GitHub Pages serves the main branch from the repository
+# root, and index.html redirects to dist/index.html. Rebuild with
+# `npm run deploy` (production). The build copies src/models/ to dist/models/.
