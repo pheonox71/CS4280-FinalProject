@@ -4,7 +4,7 @@ A WebGL maze you roll a basketball through: find the tower in the northwest corn
 
 This is my portfolio copy of a partner final project for CS 4280 Computer Graphics at Weber State University, Spring 2024. The [original repository](https://github.com/NickILStep/CS4280-FinalProject) is public and licensed under MIT.
 
-**Demo:** [pheonox71.github.io/CS4280-FinalProject](https://pheonox71.github.io/CS4280-FinalProject/) (this fork). Forks do not inherit GitHub Pages, so that URL stays empty until Pages is set to branch `main` and folder `/ (root)`. The original demo is still at [nickilstep.github.io/CS4280-FinalProject](https://nickilstep.github.io/CS4280-FinalProject/) (partner's GitHub Pages site; assets were still serving when checked in November 2026). The root page redirects into the webpack `dist/` output.
+**Demo:** [pheonox71.github.io/CS4280-FinalProject](https://pheonox71.github.io/CS4280-FinalProject/)
 
 <!-- TODO: add a short demo GIF or screenshots of the basketball in the town maze, the water floor, and the northwest tower once they are captured. -->
 
@@ -24,7 +24,7 @@ All of this is implemented with THREE.js (r120) on a `WebGLRenderer`, not with h
 - **Materials and lighting.** The ball and a large ground plane use `MeshPhongMaterial`. The scene has a single `AmbientLight` (white, intensity 0.9). There are no directional or point lights.
 - **Textures.** A basketball color map is applied to the sphere. The ground plane uses a painted water texture (`waterPaint.jpg`).
 - **Animated water.** A larger `THREE.Water` plane (the Water2 example object) sits just above the ground, with two normal maps, a flow direction, and 1024×1024 water textures.
-- **Town maze.** The maze is loaded at runtime with `MTLLoader` and `OBJLoader` from `./models/Town.mtl` and `./models/MazeTown1.obj` (the color map is `TownColor.png`). The source files are `src/models/`; the build copies them to `dist/models/`.
+- **Town maze.** The maze is loaded at runtime with `MTLLoader` and `OBJLoader` from `./models/Town.mtl` and `./models/MazeTown1.obj.js` (the color map is `TownColor.png`). The source files are `src/models/`; the build copies them to `dist/models/`. The model is still the Townscaper OBJ. The `.js` suffix lets GitHub Pages gzip it; a `.obj` URL is served as `application/x-tgif` and is not compressed.
 - **Camera follow.** Each frame the camera is placed at `(ball.x, ball.y + 10, ball.z)` and aimed at the ball. `OrbitControls` is still created and updated, but that follow pose overwrites it.
 - **Rolling animation.** After a move is accepted, the ball is rotated on world axes (`rotateOnWorldAxis`) so it appears to roll in the direction of travel.
 
@@ -53,7 +53,7 @@ All of this is implemented with THREE.js (r120) on a `WebGLRenderer`, not with h
 │   │   └── webgl_helper.js    # unused course-starter WebGL2 helper
 │   ├── stylesheets/main.scss
 │   ├── images/                # basketball, water textures, WebGL logo
-│   ├── models/                # MazeTown1.obj, Town.mtl, TownColor.png
+│   ├── models/                # MazeTown1.obj.js, Town.mtl, TownColor.png
 │   └── shaders/               # empty (.keep only)
 └── dist/                      # production webpack build, committed for GitHub Pages
     └── models/                # copied from src/models/ by the build
@@ -101,7 +101,7 @@ The project started from Prof. Abdulmalek Al-Gahmi's [CS 4280 webpack starter](h
 **Node version:** This copy was installed and built with Node 22. The course starter targeted Node 12.20.0 because the project depended on `node-sass@^4.14.1`, which does not build on current Node. That dependency is replaced here with the `sass` package (Dart Sass 1.77.8, which still exposes the render API `sass-loader` 7 expects). Webpack 4 also calls the `md4` hash. Node 17+ disables `md4` unless the process is started with `--openssl-legacy-provider`, so `scripts/webpack.js` adds that flag before `npm start` and `npm run deploy`.
 
 1. Clone this repository.
-2. Install dependencies and start the dev server. The build copies `src/models/` (`Town.mtl`, `MazeTown1.obj`, `TownColor.png`) into `dist/models/`.
+2. Install dependencies and start the dev server. The build copies `src/models/` (`Town.mtl`, `MazeTown1.obj.js`, `TownColor.png`) into `dist/models/`.
 
 ```bash
 npm install
